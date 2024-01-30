@@ -1,6 +1,7 @@
-class CreateTasks < ActiveRecord::Migration[7.1]
+class CreateTasks < ActiveRecord::Migration[7.0]
   def change
     create_table :tasks do |t|
+      t.string :task_id
       t.string :name
       t.boolean :completed
 
