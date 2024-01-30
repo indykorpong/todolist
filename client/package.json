@@ -1,7 +1,6 @@
 {
   "name": "client",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "@phosphor-icons/react": "^2.0.15",
     "axios": "^1.6.7",
@@ -10,6 +9,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.3",
     "react-scripts": "5.0.1",
+    "universal-cookie": "^7.0.2",
     "uuid": "^9.0.1"
   },
   "scripts": {
@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "react-scripts build && firebase deploy"
+    "deploy": "cross-env REACT_APP_API_URL=https://rails-production-1e5f.up.railway.app/api/v1 react-scripts build && firebase deploy"
   },
   "eslintConfig": {
     "extends": [

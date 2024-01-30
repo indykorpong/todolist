@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import instance from "../lib/axios";
-import CSRFToken from "../lib/csrfToken";
 
 import TaskCard from "../components/TaskCard";
 import TodoForm from "../components/TodoForm";
@@ -41,12 +40,7 @@ const Todo = () => {
     setTasks([...tasks, task]);
 
     instance
-      .post("/tasks", task, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": CSRFToken(document.cookie),
-        },
-      })
+      .post("/tasks", task)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   };
@@ -61,13 +55,7 @@ const Todo = () => {
     instance
       .put(
         `/tasks/${id}`,
-        newTasks.find((task) => task.task_id === id),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": CSRFToken(document.cookie),
-          },
-        }
+        newTasks.find((task) => task.task_id === id)
       )
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
@@ -85,12 +73,7 @@ const Todo = () => {
     setTasks(tasks.filter((task) => task.task_id !== id));
 
     instance
-      .delete(`/tasks/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": CSRFToken(document.cookie),
-        },
-      })
+      .delete(`/tasks/${id}`)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   };
@@ -104,13 +87,7 @@ const Todo = () => {
     instance
       .put(
         `/tasks/${id}`,
-        newTasks.find((task) => task.task_id === id),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": CSRFToken(document.cookie),
-          },
-        }
+        newTasks.find((task) => task.task_id === id)
       )
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
