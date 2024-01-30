@@ -5,7 +5,7 @@ const EditTodoForm = ({ editTask, task }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    editTask(value, task.id);
+    editTask(value, task.task_id);
     setValue("");
   };
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import instance from "../api/axios";
 
@@ -9,9 +9,30 @@ import EditTodoForm from "../components/EditTodoForm";
 const Todo = () => {
   const [tasks, setTasks] = useState([]);
 
+  useEffect(() => {
+    instance
+      .get("/tasks")
+      .then((res) => {
+        const sortedTasks = res.data.sort(
+          (a, b) => new Date(a.created_at) - new Date(b.created_at)
+        );
+        const formattedTasks = sortedTasks.map((task) => {
+          return {
+            task_id: task.task_id,
+            name: task.name,
+            completed: task.completed,
+            isEditing: false,
+          };
+        });
+
+        setTasks(formattedTasks);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const addTask = (value) => {
     const task = {
-      id: uuidv4(),
+      task_id: uuidv4(),
       name: value,
       completed: false,
       isEditing: false,
@@ -19,22 +40,22 @@ const Todo = () => {
     setTasks([...tasks, task]);
 
     instance
-      .post("/todos", task)
+      .post("/tasks", task)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   };
 
   const toggleComplete = (id) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
+    const newTasks = tasks.map((task) =>
+      task.task_id === id ? { ...task, completed: !task.completed } : task
     );
+
+    setTasks(newTasks);
 
     instance
       .put(
-        `/todos/${id}`,
-        tasks.find((task) => task.id === id)
+        `/tasks/${id}`,
+        newTasks.find((task) => task.task_id === id)
       )
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
@@ -43,31 +64,30 @@ const Todo = () => {
   const markEditing = (id) => {
     setTasks(
       tasks.map((task) =>
-        task.id === id ? { ...task, isEditing: !task.isEditing } : task
+        task.task_id === id ? { ...task, isEditing: !task.isEditing } : task
       )
     );
   };
 
   const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+    setTasks(tasks.filter((task) => task.task_id !== id));
 
     instance
-      .delete(`/todos/${id}`)
+      .delete(`/tasks/${id}`)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   };
 
   const editTask = (value, id) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, name: value, isEditing: false } : task
-      )
+    const newTasks = tasks.map((task) =>
+      task.task_id === id ? { ...task, name: value, isEditing: false } : task
     );
+    setTasks(newTasks);
 
     instance
       .put(
-        `/todos/${id}`,
-        tasks.find((task) => task.id === id)
+        `/tasks/${id}`,
+        newTasks.find((task) => task.task_id === id)
       )
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));

@@ -6,7 +6,7 @@ class Api::V1::TasksController < ApplicationController
   end
 
   def show
-    task = Task.find_by(id: params[:id])
+    task = Task.find_by(task_id: params[:id])
     render json: task
   end
 
@@ -20,7 +20,7 @@ class Api::V1::TasksController < ApplicationController
   end
   
   def update
-    task = Task.find_by(id: params[:id])
+    task = Task.find_by(task_id: params[:id])
     
     if task.update(task_params)
       render json: {status: "SUCCESS", message: "Task Updated", data: task}, status: :ok
@@ -30,12 +30,12 @@ class Api::V1::TasksController < ApplicationController
   end
   
   def destroy
-    task = Task.find_by(id: params[:id])
+    task = Task.find_by(task_id: params[:id])
     task.destroy
     render json: {status: "SUCCESS", message: "Task Deleted", data: task}, status: :ok
   end
 
   def task_params
-    params.require(:task).permit(:id, :name, :completed)
+    params.require(:task).permit(:task_id, :name, :completed)
   end
 end

@@ -17,17 +17,17 @@ const TaskCard = ({ task, toggleComplete, handleEdit, handleDelete }) => {
   return (
     <>
       <div className="flex flex-row justify-center items-center my-2 py-2 max-w-md mx-auto">
-        <button onClick={() => toggleComplete(task.id)}>{icon}</button>
+        <button onClick={() => toggleComplete(task.task_id)}>{icon}</button>
         <div className={"grow ml-2 " + lineThrough}>{task.name}</div>
         <PencilSimpleLine
           className="mx-1 hover:cursor-pointer"
           size={20}
-          onClick={() => handleEdit(task.id)}
+          onClick={() => handleEdit(task.task_id)}
         />
         <Trash
           className="mx-1 hover:cursor-pointer"
           size={20}
-          onClick={() => handleDelete(task.id)}
+          onClick={() => handleDelete(task.task_id)}
         />
       </div>
       <hr />
