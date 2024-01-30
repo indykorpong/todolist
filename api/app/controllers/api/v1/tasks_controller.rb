@@ -18,24 +18,24 @@ class Api::V1::TasksController < ApplicationController
       render json: task.errors, status: :unprocessable_entity
     end
   end
-
-  def task_params
-    params.require(:task).permit(:name, :completed)
-  end
-
+  
   def update
     task = Task.find_by(id: params[:id])
-
+    
     if task.update(task_params)
       render json: {status: "SUCCESS", message: "Task Updated", data: task}, status: :ok
     else
       render json: task.errors, status: :unprocessable_entity
     end
   end
-
+  
   def destroy
     task = Task.find_by(id: params[:id])
     task.destroy
     render json: {status: "SUCCESS", message: "Task Deleted", data: task}, status: :ok
+  end
+
+  def task_params
+    params.require(:task).permit(:id, :name, :completed)
   end
 end
